@@ -62,6 +62,20 @@ namespace OAuth
 		}
 
 		/// <summary>
+		/// Use this ctor if your application is already authorized and you already have the token credentials.
+		/// </summary>
+		/// <param name="clientIdentifier"></param>
+		/// <param name="clientSharedSecred"></param>
+		/// <param name="tokenIdentifier"></param>
+		/// <param name="tokenSharedSecret"></param>
+		public OAuthClient(string clientIdentifier, string clientSharedSecred, string tokenIdentifier, string tokenSharedSecret)
+			: this()
+		{
+			this.ClientCredentials = new OAuthCredentials(clientIdentifier, clientSharedSecred);
+			this.TokenCredentials = new OAuthCredentials(tokenIdentifier, tokenSharedSecret);
+		}
+
+		/// <summary>
 		/// Utility method avoiding the hassle of creating a new HttpWebRequest and setting some default values by hand...
 		/// </summary>
 		/// <param name="method"></param>
