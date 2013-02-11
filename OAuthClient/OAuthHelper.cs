@@ -87,54 +87,30 @@ namespace OAuth
 
 		public static List<QueryParameter> GetTemporaryCredentialsRequestParameters(string clientIdentifier, SignatureMethod signatureMethod, string callBackUri = "oob")
 		{
-			List<QueryParameter> result = new List<QueryParameter>();
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.ConsumerKey], clientIdentifier));
+			var result = GetParametersBase(clientIdentifier, signatureMethod);
 			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Callback], callBackUri));
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.SignatureMethod], OAuthSignatureMethods[signatureMethod]));
-
-			switch (signatureMethod)
-			{
-				case SignatureMethod.PLAINTEXT:
-					break;
-				case SignatureMethod.HMAC_SHA1:
-					result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Timestamp], OAuthHelper.GenerateUTCTimestamp()));
-					result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Nonce], OAuthHelper.GenerateNonce()));
-					break;
-				case SignatureMethod.RSA_SHA1:
-				default:
-					throw new NotImplementedException();
-			}
 			return result;
 		}
 
 		public static List<QueryParameter> GetTokenCredentialsRequestParameters(string clientIdentifier, SignatureMethod signatureMethod, string temporaryIdentifier, string verifier)
 		{
-			List<QueryParameter> result = new List<QueryParameter>();
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.ConsumerKey], clientIdentifier));
+			var result = GetParametersBase(clientIdentifier, signatureMethod);
 			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Token], temporaryIdentifier));
 			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Verifier], verifier));
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.SignatureMethod], OAuthSignatureMethods[signatureMethod]));
-
-			switch (signatureMethod)
-			{
-				case SignatureMethod.PLAINTEXT:
-					break;
-				case SignatureMethod.HMAC_SHA1:
-					result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Timestamp], OAuthHelper.GenerateUTCTimestamp()));
-					result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Nonce], OAuthHelper.GenerateNonce()));
-					break;
-				case SignatureMethod.RSA_SHA1:
-				default:
-					throw new NotImplementedException();
-			}
 			return result;
 		}
 
 		public static List<QueryParameter> GetTokenCredentialsParameters(string clientIdentifier, SignatureMethod signatureMethod, string tokenIdentifier)
 		{
+			var result = GetParametersBase(clientIdentifier, signatureMethod);
+			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Token], tokenIdentifier));
+			return result;
+		}
+
+		private static List<QueryParameter> GetParametersBase(string clientIdentifier, SignatureMethod signatureMethod)
+		{
 			List<QueryParameter> result = new List<QueryParameter>();
 			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.ConsumerKey], clientIdentifier));
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Token], tokenIdentifier));
 			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.SignatureMethod], OAuthSignatureMethods[signatureMethod]));
 
 			switch (signatureMethod)

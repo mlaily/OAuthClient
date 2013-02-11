@@ -115,20 +115,21 @@ namespace OAuth
 		/// First step to the authorization process.
 		/// Make a request to the TemporaryCredentialsRequestEndpoint, then store the resulting temporary credentials in this instance.
 		/// </summary>
-		public void RequestTemporaryCredentials()
+		/// <param name="callBackUri">
+		/// set to "oob" if null.
+		/// An absolute URI back to which the server will
+		/// redirect the resource owner when the Resource Owner
+		/// Authorization step (Section 2.2) is completed.  If
+		/// the client is unable to receive callbacks or a
+		/// callback URI has been established via other means,
+		/// the parameter value MUST be set to "oob" (case
+		/// sensitive), to indicate an out-of-band
+		/// configuration.
+		/// </param>
+		public void RequestTemporaryCredentials(string callBackUri = "oob")
 		{
 			HttpWebRequest request = CreateRequest(HttpMethod.POST, this.TemporaryCredentialsRequestEndpoint);
-			//TODO: should allow the user to set the callback uri here.
-			//From the rfc:
-			//An absolute URI back to which the server will
-			//redirect the resource owner when the Resource Owner
-			//Authorization step (Section 2.2) is completed.  If
-			//the client is unable to receive callbacks or a
-			//callback URI has been established via other means,
-			//the parameter value MUST be set to "oob" (case
-			//sensitive), to indicate an out-of-band
-			//configuration.
-			var oAuthParameters = OAuthHelper.GetTemporaryCredentialsRequestParameters(ClientCredentials.Identifier, SignatureMethod.HMAC_SHA1);
+			var oAuthParameters = OAuthHelper.GetTemporaryCredentialsRequestParameters(ClientCredentials.Identifier, SignatureMethod.HMAC_SHA1, callBackUri);
 			OAuthHelper.MakeRequestAuthenticated(request, oAuthParameters, ClientCredentials.SharedSecret, "");
 
 			string responseString;
