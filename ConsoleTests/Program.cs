@@ -33,8 +33,10 @@ namespace ConsoleTests
 			var authorizationRequestUri = oauth.GetAuthorizationUri();
 			//the user must visit the authorization uri and accept the application to continue.
 			//they are then redirected to the callback uri, with the required oauth parameters provided by the server.
-			string authorizedCallBackUri = "authorized (verified) callback uri from the server...";
+			Uri authorizedCallBackUri = new Uri("authorized (verified) callback uri from the server...");
 			oauth.RequestTokenCredentials(authorizedCallBackUri);
+			//alternatively, if the server provides a verifier (i.e twitter pin) directly to the user:
+			//oauth.RequestTokenCredentials("pin");
 
 			request = (HttpWebRequest)HttpWebRequest.Create("http://api.tumblr.com/v2/user/info");
 			oauth.MakeRequestAuthenticated(request);

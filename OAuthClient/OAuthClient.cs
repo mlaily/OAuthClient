@@ -183,19 +183,24 @@ namespace OAuth
 		/// then make a request to the TokenRequestEndpoint to finally get the token credentials, and store them in this instance.
 		/// </summary>
 		/// <param name="authorizedCallbackUri"></param>
-		public void RequestTokenCredentials(string authorizedCallbackUri)
+		public void RequestTokenCredentials(Uri authorizedCallbackUri)
 		{
-			var parsedCallbackUri = OAuthHelper.GetParametersFromUri(new Uri(authorizedCallbackUri));
+			var parsedCallbackUri = OAuthHelper.GetParametersFromUri(authorizedCallbackUri);
 			if (!parsedCallbackUri.Any(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Token] && x.Value == this.TemporaryCredentials.Identifier))
 			{
 				throw new Exception("The temporary identifier in the url does not match the one in this instance!");
 			}
-			this.Verifier = parsedCallbackUri.SingleOrDefault(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Verifier]).Value;
-			if (this.Verifier == null)
+			var verifier = parsedCallbackUri.SingleOrDefault(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Verifier]).Value;
+			if (verifier == null)
 			{
 				throw new Exception("Verifier parameter not found in the url!");
 			}
+			RequestTokenCredentials(verifier);
+		}
 
+		public void RequestTokenCredentials(string verifier)
+		{
+			this.Verifier = verifier;
 			HttpWebRequest request = CreateRequest(HttpMethod.POST, this.TokenRequestEndpoint);
 			var oAuthParameters = OAuthHelper.GetTokenCredentialsRequestParameters(this.ClientCredentials.Identifier, SignatureMethod.HMAC_SHA1, this.TemporaryCredentials.Identifier, this.Verifier);
 
