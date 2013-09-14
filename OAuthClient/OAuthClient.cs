@@ -97,11 +97,12 @@ namespace OAuth
 		/// <param name="request"></param>
 		/// <param name="responseBody"></param>
 		/// <returns></returns>
-		private static HttpWebResponse TryGetResponse(HttpWebRequest request, out string responseBody)
+		private static HttpWebResponse TryGetResponse(HttpWebRequest request, out string responseBody, int contentLength = 0)
 		{
 			HttpWebResponse response = null;
 			try
 			{
+				request.ContentLength = contentLength;
 				response = (HttpWebResponse)request.GetResponse();
 				using (response)
 				using (var sr = new System.IO.StreamReader(response.GetResponseStream()))
