@@ -17,7 +17,7 @@ informational documentation of OAuth Core 1.0 Revision A.
 The original community specification used a somewhat different
 terminology which maps as follows to the rfc:
 
-    New RFC Terms       |   Old community specification terms
+    New RFC Terms       |   Original community specification terms
 -------------------------------------------------------------
 client                  |   Consumer
 server                  |   Service Provider
