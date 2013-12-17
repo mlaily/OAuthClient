@@ -65,18 +65,18 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(12, 9);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(97, 13);
+			this.label1.Size = new System.Drawing.Size(276, 13);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Request Token Url";
+			this.label1.Text = "Temporary Credentials Request URI (Request Token Uri)";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(12, 48);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(67, 13);
+			this.label2.Size = new System.Drawing.Size(242, 13);
 			this.label2.TabIndex = 3;
-			this.label2.Text = "Authorize Url";
+			this.label2.Text = "Resource Owner Authorization URI (Authorize Uri)";
 			// 
 			// txtAuthorizeUrl
 			// 
@@ -91,9 +91,9 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(12, 87);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(92, 13);
+			this.label3.Size = new System.Drawing.Size(197, 13);
 			this.label3.TabIndex = 5;
-			this.label3.Text = "Access Token Url";
+			this.label3.Text = "Token Request URI (Access Token Uri)";
 			// 
 			// txtAccessTokenUrl
 			// 
@@ -120,7 +120,7 @@
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(127, 13);
 			this.label4.TabIndex = 12;
-			this.label4.Text = "Authorization Request Url";
+			this.label4.Text = "Authorization Request Uri";
 			// 
 			// txtAuthorizationRequestUrl
 			// 
@@ -137,7 +137,7 @@
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(87, 13);
 			this.label5.TabIndex = 14;
-			this.label5.Text = "PIN/Callback Url";
+			this.label5.Text = "PIN/Callback Uri";
 			// 
 			// txtPinOrCallbackUrl
 			// 
@@ -161,9 +161,9 @@
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(12, 430);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(81, 13);
+			this.label6.Size = new System.Drawing.Size(155, 13);
 			this.label6.TabIndex = 17;
-			this.label6.Text = "Token Identifier";
+			this.label6.Text = "Token Identifier/Access Token";
 			// 
 			// txtTokenIdentifier
 			// 
@@ -178,9 +178,9 @@
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(9, 469);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(109, 13);
+			this.label7.Size = new System.Drawing.Size(183, 13);
 			this.label7.TabIndex = 19;
-			this.label7.Text = "Token Shared Secret";
+			this.label7.Text = "Token Shared Secret/Access Secret";
 			// 
 			// txtSharedSecret
 			// 
@@ -195,9 +195,9 @@
 			this.label8.AutoSize = true;
 			this.label8.Location = new System.Drawing.Point(12, 188);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(117, 13);
+			this.label8.Size = new System.Drawing.Size(190, 13);
 			this.label8.TabIndex = 7;
-			this.label8.Text = "Client Identifier/Api Key";
+			this.label8.Text = "Client Identifier/Consumer Key/Api Key";
 			// 
 			// txtClientIdentifier
 			// 
@@ -211,9 +211,9 @@
 			this.label9.AutoSize = true;
 			this.label9.Location = new System.Drawing.Point(12, 227);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(158, 13);
+			this.label9.Size = new System.Drawing.Size(244, 13);
 			this.label9.TabIndex = 9;
-			this.label9.Text = "Client Shared Secret/Api Secret";
+			this.label9.Text = "Client Shared Secret/Consumer Secret/Api Secret";
 			// 
 			// txtClientSharedSecret
 			// 
@@ -229,7 +229,7 @@
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(218, 13);
 			this.label10.TabIndex = 5;
-			this.label10.Text = "Callback Url (set to \"oob\" if it does not apply)";
+			this.label10.Text = "Callback Uri (set to \"oob\" if it does not apply)";
 			// 
 			// txtCallbackUrl
 			// 
