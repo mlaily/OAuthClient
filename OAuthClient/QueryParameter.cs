@@ -7,7 +7,6 @@ namespace OAuth
 {
 	public class QueryParameter
 	{
-
 		public string Name { get; protected set; }
 		public string Value { get; protected set; }
 
@@ -18,19 +17,7 @@ namespace OAuth
 		}
 
 		public QueryParameter(OAuthParameter name, string value)
-			: this(name.GetName(), value) { }
-
-		/// <summary>
-		/// The name of each parameter is concatenated to its corresponding
-		/// value using an "=" character (ASCII code 61) as a separator, even
-		/// if the value is empty.
-		/// </summary>
-		/// <returns></returns>
-		public override string ToString()
-		{
-			return string.Format("{0}={1}", this.Name, this.Value);
-		}
-
+			: this(name.ToStringValue(), value) { }
 	}
 
 	public class QueryParameterComparer : IComparer<QueryParameter>
@@ -38,9 +25,6 @@ namespace OAuth
 		/// <summary>
 		/// performs binary comparison on strings.
 		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <returns></returns>
 		public int Compare(QueryParameter x, QueryParameter y)
 		{
 			/* The parameters are sorted by name, using ascending byte value

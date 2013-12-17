@@ -7,33 +7,6 @@ using System.Security.Cryptography;
 
 namespace OAuth
 {
-
-	/// <summary>
-	/// Represents a set of credentials, made of an identifier and a shared-secret.
-	/// </summary>
-	public class OAuthCredentials
-	{
-
-		public string Identifier { get; protected set; }
-		public string SharedSecret { get; protected set; }
-
-		public OAuthCredentials(string identifier, string sharedSecret)
-		{
-			this.Identifier = identifier;
-			this.SharedSecret = sharedSecret;
-		}
-
-		/// <summary>
-		/// Returns the identifier and the shared-secret encoded using the OAuth percent encoding,
-		/// concatenated and separated by a '&amp;' character.
-		/// </summary>
-		/// <returns></returns>
-		public override string ToString()
-		{
-			return string.Format("{0}&{1}", OAuthHelper.OAuthPercentEncode(Identifier), OAuthHelper.OAuthPercentEncode(SharedSecret));
-		}
-	}
-
 	public static partial class OAuthHelper
 	{
 		/// <summary>
@@ -84,10 +57,10 @@ namespace OAuth
 			return result.ToString();
 		}
 
-		public static List<QueryParameter> GetTemporaryCredentialsRequestParameters(string clientIdentifier, SignatureMethod signatureMethod, string callBackUri = "oob")
+		public static List<QueryParameter> GetTemporaryCredentialsRequestParameters(string clientIdentifier, SignatureMethod signatureMethod, string callbackUri = "oob")
 		{
 			var result = GetParametersBase(clientIdentifier, signatureMethod);
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Callback], callBackUri));
+			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Callback], callbackUri));
 			return result;
 		}
 
@@ -304,7 +277,5 @@ namespace OAuth
 			//uses CoCreateGuid() win32 function, which should be a good cryptographic random source.
 			return Guid.NewGuid().ToString();
 		}
-
 	}
-
 }

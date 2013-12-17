@@ -7,7 +7,7 @@ namespace OAuth
 {
 	/// <summary>
 	/// The textual representation of each parameter can be retrieved using
-	/// the OAuthHelper.OAuthSignatureMethods dictionary.
+	/// the OAuthHelper.GetValue extension method.
 	/// </summary>
 	public enum SignatureMethod
 	{
@@ -19,7 +19,7 @@ namespace OAuth
 	/// <summary>
 	/// Convenient list of well known OAuth parameters.
 	/// The textual representation of each parameter can be retrieved using
-	/// the OAuthHelper.OAuthParametersNames dictionary.
+	/// the OAuthHelper.GetValue extension method.
 	/// </summary>
 	public enum OAuthParameter
 	{
@@ -53,7 +53,7 @@ namespace OAuth
 			{OAuthParameter.CallbackConfirmed, "oauth_callback_confirmed"},
 			{OAuthParameter.Verifier, "oauth_verifier"},
 		};
-		public static string GetName(this OAuthParameter value)
+		public static string ToStringValue(this OAuthParameter value)
 		{
 			if (Enum.IsDefined(typeof(OAuthParameter), value)) return OAuthParametersNames[value];
 			else throw new NotImplementedException();
@@ -65,7 +65,7 @@ namespace OAuth
 			{SignatureMethod.RSA_SHA1, "RSA-SHA1"},
 			{SignatureMethod.HMAC_SHA1, "HMAC-SHA1"},
 		};
-		public static string GetName(this SignatureMethod value)
+		public static string ToStringValue(this SignatureMethod value)
 		{
 			if (Enum.IsDefined(typeof(SignatureMethod), value)) return OAuthSignatureMethods[value];
 			else throw new NotImplementedException();

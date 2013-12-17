@@ -14,7 +14,7 @@ namespace RegisterTokenUtility
 	public partial class Form1 : Form
 	{
 
-		private OAuthClient oauth;
+		private OAuthProcess oauth;
 
 		public Form1()
 		{
@@ -25,9 +25,8 @@ namespace RegisterTokenUtility
 		{
 			try
 			{
-				oauth = new OAuthClient(
-					txtClientIdentifier.Text.Trim(),
-					txtClientSharedSecret.Text.Trim(),
+				oauth = new OAuthProcess(
+					new ClientCredentials(txtClientIdentifier.Text.Trim(), txtClientSharedSecret.Text.Trim()),
 					txtRequestTokenUrl.Text.Trim(),
 					txtAuthorizeUrl.Text.Trim(),
 					txtAccessTokenUrl.Text.Trim());
@@ -60,9 +59,16 @@ namespace RegisterTokenUtility
 		{
 			try
 			{
-				oauth.RequestTokenCredentials(txtPinOrCallbackUrl.Text.Trim());
-				txtTokenIdentifier.Text = oauth.TokenCredentials.Identifier;
-				txtSharedSecret.Text = oauth.TokenCredentials.SharedSecret;
+				string verifier;
+				string rawValue = txtPinOrCallbackUrl.Text.Trim();
+				if (rawValue.StartsWith("http"))
+					verifier = oauth.ParseVerifierFromAuthorizedCallbackUri(rawValue);
+				else
+					verifier = rawValue;
+
+				var tokenCredentials = oauth.RequestTokenCredentials(verifier);
+				txtTokenIdentifier.Text = tokenCredentials.Identifier;
+				txtSharedSecret.Text = tokenCredentials.SharedSecret;
 			}
 			catch (Exception ex)
 			{
