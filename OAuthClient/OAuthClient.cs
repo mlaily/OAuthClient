@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OAuth.Enums;
 using System.Net;
 
 namespace OAuth
@@ -152,10 +151,10 @@ namespace OAuth
 
 			var parsed = OAuthHelper.ParseParameters(responseString);
 			//oauth_callback_confirmed MUST be present and set to "true". The parameter is used to differentiate from previous versions of the protocol.
-			if (parsed.Any(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.CallbackConfirmed] && x.Value.ToLowerInvariant() == "true"))
+			if (parsed.Any(x => x.Name == OAuthParameter.CallbackConfirmed.GetName() && x.Value.ToLowerInvariant() == "true"))
 			{
-				var identifier = parsed.Single(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Token]).Value;
-				var sharedSecret = parsed.Single(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.TokenSecret]).Value;
+				var identifier = parsed.Single(x => x.Name == OAuthParameter.Token.GetName()).Value;
+				var sharedSecret = parsed.Single(x => x.Name == OAuthParameter.TokenSecret.GetName()).Value;
 				this.TemporaryCredentials = new OAuthCredentials(identifier, sharedSecret);
 			}
 			else
@@ -175,7 +174,7 @@ namespace OAuth
 			{
 				throw new Exception("The RequestTemporaryCredentials() method must be called first!");
 			}
-			return string.Format("{0}?{1}={2}", this.ResourceOwnerAuthorizationEndpoint, OAuthHelper.OAuthParametersNames[OAuthParameter.Token], this.TemporaryCredentials.Identifier);
+			return string.Format("{0}?{1}={2}", this.ResourceOwnerAuthorizationEndpoint, OAuthParameter.Token.GetName(), this.TemporaryCredentials.Identifier);
 		}
 
 		/// <summary>
@@ -187,11 +186,11 @@ namespace OAuth
 		public void RequestTokenCredentials(Uri authorizedCallbackUri)
 		{
 			var parsedCallbackUri = OAuthHelper.GetParametersFromUri(authorizedCallbackUri);
-			if (!parsedCallbackUri.Any(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Token] && x.Value == this.TemporaryCredentials.Identifier))
+			if (!parsedCallbackUri.Any(x => x.Name == OAuthParameter.Token.GetName() && x.Value == this.TemporaryCredentials.Identifier))
 			{
 				throw new Exception("The temporary identifier in the url does not match the one in this instance!");
 			}
-			var verifier = parsedCallbackUri.SingleOrDefault(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Verifier]).Value;
+			var verifier = parsedCallbackUri.SingleOrDefault(x => x.Name == OAuthParameter.Verifier.GetName()).Value;
 			if (verifier == null)
 			{
 				throw new Exception("Verifier parameter not found in the url!");
@@ -211,8 +210,8 @@ namespace OAuth
 			TryGetResponse(request, out responseString);
 
 			var parsed = OAuthHelper.ParseParameters(responseString);
-			var identifier = parsed.Single(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.Token]).Value;
-			var sharedSecret = parsed.Single(x => x.Name == OAuthHelper.OAuthParametersNames[OAuthParameter.TokenSecret]).Value;
+			var identifier = parsed.Single(x => x.Name == OAuthParameter.Token.GetName()).Value;
+			var sharedSecret = parsed.Single(x => x.Name == OAuthParameter.TokenSecret.GetName()).Value;
 			this.TokenCredentials = new OAuthCredentials(identifier, sharedSecret);
 		}
 

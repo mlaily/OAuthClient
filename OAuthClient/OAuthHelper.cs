@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
-using OAuth.Enums;
 using System.Security.Cryptography;
 
 namespace OAuth
@@ -35,7 +34,7 @@ namespace OAuth
 		}
 	}
 
-	public static class OAuthHelper
+	public static partial class OAuthHelper
 	{
 		/// <summary>
 		/// revision a.
@@ -306,35 +305,6 @@ namespace OAuth
 			return Guid.NewGuid().ToString();
 		}
 
-		/// <summary>
-		/// Allow for an easy way to get the representation of the OAuthParameter enum values.
-		/// </summary>
-		public static readonly Dictionary<OAuthParameter, string> OAuthParametersNames = new Dictionary<OAuthParameter, string>()
-		{
-			{OAuthParameter.ConsumerKey, "oauth_consumer_key"},
-			{OAuthParameter.Callback, "oauth_callback"},
-			{OAuthParameter.Version,"oauth_version"},
-			{OAuthParameter.SignatureMethod,"oauth_signature_method"},
-			{OAuthParameter.Signature, "oauth_signature"},
-			{OAuthParameter.Timestamp, "oauth_timestamp"},
-			{OAuthParameter.Nonce, "oauth_nonce"},
-			{OAuthParameter.Token,"oauth_token"},
-			{OAuthParameter.TokenSecret, "oauth_token_secret"},
-			{OAuthParameter.CallbackConfirmed, "oauth_callback_confirmed"},
-			{OAuthParameter.Verifier, "oauth_verifier"},
-		};
-
-		/// <summary>
-		/// Allow for an easy way to get the representation of the SignatureMethod enum values.
-		/// </summary>
-		public static readonly Dictionary<SignatureMethod, string> OAuthSignatureMethods = new Dictionary<SignatureMethod, string>()
-		{
-			{SignatureMethod.PLAINTEXT, "PLAINTEXT"},
-			{SignatureMethod.RSA_SHA1, "RSA-SHA1"},
-			{SignatureMethod.HMAC_SHA1, "HMAC-SHA1"},
-		};
-
 	}
-
 
 }

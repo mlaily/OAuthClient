@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OAuth.Enums;
 
 namespace OAuth
 {
@@ -19,7 +18,7 @@ namespace OAuth
 		}
 
 		public QueryParameter(OAuthParameter name, string value)
-			: this(OAuthHelper.OAuthParametersNames[name], value) { }
+			: this(name.GetName(), value) { }
 
 		/// <summary>
 		/// The name of each parameter is concatenated to its corresponding

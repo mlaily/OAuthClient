@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using OAuth;
-using OAuth.Enums;
 
 namespace TestProject
 {
