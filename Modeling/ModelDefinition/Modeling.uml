@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner"
   dslVersion="1.0.0.0"
   Id="d7e0adc6-06eb-4e58-a7d0-b00ee820dc75"
   name="Modeling" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -44,14 +44,16 @@
           </comment>
           <comment
             Id="1a1ddf36-db51-4377-83ae-dc7eb2c82772">
-            <body>New RFC Terms		|	Old community specification terms
+            <body>New RFC Terms		|	Original community specification terms
 -------------------------------------------------------------
 client			|	Consumer
 server			|	Service Provider
 resource owner		|	User
 client credentials		|	Consumer Key and Secret
 temporary credentials	|	Request Token and Secret
-token credentials		|	Access Token and Secret</body>
+token credentials		|	Access Token and Secret
+
+Credentials are composed of an identifier, and a matching shared secret.</body>
           </comment>
           <comment
             Id="fa485a89-1923-4046-94da-f045edc96743">
@@ -208,22 +210,22 @@ token credentials		|	Access Token and Secret</body>
             </covered>
           </messageOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="bada481b-9692-48e3-826d-46ccf3a7f9f7"
-            name="MessageOccurrenceSpecification8">
-            <covered>
-              <lifelineMoniker
-                Id="50a2c4cf-c03f-4d7c-a069-58db6af17cfa"
-                LastKnownName="client"
-                LastKnownLocation="Modeling.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="d2770484-9c59-42d6-8a93-7f671913c73b"
             name="MessageOccurrenceSpecification7">
             <covered>
               <lifelineMoniker
                 Id="5078bfd9-c5ae-48e7-8412-c7f90eff102e"
                 LastKnownName="server"
+                LastKnownLocation="Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="bada481b-9692-48e3-826d-46ccf3a7f9f7"
+            name="MessageOccurrenceSpecification8">
+            <covered>
+              <lifelineMoniker
+                Id="50a2c4cf-c03f-4d7c-a069-58db6af17cfa"
+                LastKnownName="client"
                 LastKnownLocation="Modeling.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -909,7 +911,7 @@ token credentials		|	Access Token and Secret</body>
           </message>
           <message
             Id="7645f0bb-48b1-452f-a3a1-17df5000e8a0"
-            name="4. user confirms the authorization to the server"
+            name="4. user authenticates with the server and confirms the authorization to the server"
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="false">
@@ -928,7 +930,7 @@ token credentials		|	Access Token and Secret</body>
           </message>
           <message
             Id="23e79612-8c71-494a-85c8-c0798ade0fdc"
-            name="5. redirects user to callback url"
+            name="5. redirects user to callback url/gives the user a verifier (a PIN for example)"
             messageKind="Complete"
             messageSort="Reply"
             createSelfMessage="false">
@@ -947,7 +949,7 @@ token credentials		|	Access Token and Secret</body>
           </message>
           <message
             Id="e6047e13-f150-4781-a115-686a355c7dc2"
-            name="6. goes to callback url"
+            name="6. goes to callback url/gives verifier"
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="false">
@@ -966,7 +968,7 @@ token credentials		|	Access Token and Secret</body>
           </message>
           <message
             Id="8f932e56-3f69-435d-8f32-4506f3ba41f2"
-            name="7. exchanges  temporary credentials for token credentials"
+            name="7. exchanges  temporary credentials and verifier for token credentials"
             messageKind="Complete"
             messageSort="SynchCall"
             createSelfMessage="false">

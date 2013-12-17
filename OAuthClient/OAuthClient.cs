@@ -117,7 +117,7 @@ namespace OAuth
 				{
 					responseBody = sr.ReadToEnd();
 				}
-				throw;
+				throw new Exception(string.Format("WebException caught. Response body: {0}", responseBody), ex);
 			}
 			catch (Exception)
 			{
