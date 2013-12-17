@@ -36,7 +36,8 @@ namespace OAuth
 		public TemporaryCredentials RequestTemporaryCredentials(string callbackUri = "oob")
 		{
 			HttpWebRequest request = Util.CreateRequest(Util.HttpMethod.POST, this.TemporaryCredentialsRequestEndpoint);
-			var oAuthParameters = OAuthHelper.GetTemporaryCredentialsRequestParameters(this.ClientCredentials.Identifier, this.SignatureMethod, callbackUri);
+			var oAuthParameters = OAuthHelper.GetQueryParameters(this.ClientCredentials.Identifier, this.SignatureMethod,
+				new QueryParameter(OAuthParameter.Callback, callbackUri));
 			//add the oauth parameters to the request. the token secret does not exist yet so it's empty.
 			OAuthHelper.MakeRequestAuthenticated(request, oAuthParameters, this.ClientCredentials.SharedSecret, "");
 
@@ -101,7 +102,9 @@ namespace OAuth
 				throw new ArgumentNullException("temporaryCredentials", "The temporaryCredentials argument is null, and this.TemporaryCredentials is also null!");
 
 			HttpWebRequest request = Util.CreateRequest(Util.HttpMethod.POST, this.TokenRequestEndpoint);
-			var oAuthParameters = OAuthHelper.GetTokenCredentialsRequestParameters(this.ClientCredentials.Identifier, this.SignatureMethod, temporaryCredentials.Identifier, verifier);
+			var oAuthParameters = OAuthHelper.GetQueryParameters(this.ClientCredentials.Identifier, this.SignatureMethod,
+				new QueryParameter(OAuthParameter.Token, temporaryCredentials.Identifier),
+				new QueryParameter(OAuthParameter.Verifier, verifier));
 
 			OAuthHelper.MakeRequestAuthenticated(request, oAuthParameters, this.ClientCredentials.SharedSecret, temporaryCredentials.SharedSecret);
 
@@ -138,8 +141,9 @@ namespace OAuth
 		/// </summary>
 		public void MakeRequestAuthenticated(HttpWebRequest request)
 		{
-			var oAuthParameters = OAuthHelper.GetTokenCredentialsParameters(
-				this.ClientCredentials.Identifier, this.SignatureMethod, this.TokenCredentials.Identifier);
+			var oAuthParameters = OAuthHelper.GetQueryParameters(
+				this.ClientCredentials.Identifier, this.SignatureMethod,
+				new QueryParameter(OAuthParameter.Token, this.TokenCredentials.Identifier));
 			OAuthHelper.MakeRequestAuthenticated(
 				request, oAuthParameters, ClientCredentials.SharedSecret, TokenCredentials.SharedSecret);
 		}

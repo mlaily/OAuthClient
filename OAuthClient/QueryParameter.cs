@@ -18,6 +18,23 @@ namespace OAuth
 
 		public QueryParameter(OAuthParameter name, string value)
 			: this(name.ToStringValue(), value) { }
+
+		/// <summary>
+		/// The name of each parameter is concatenated to its corresponding
+		/// value using an "=" character (ASCII code 61) as a separator, even
+		/// if the value is empty.
+		/// </summary>
+		/// <returns></returns>
+		public string Encode()
+		{
+			return string.Format("{0}={1}", this.Name, this.Value);
+		}
+
+		public override string ToString()
+		{
+			return Encode();
+		}
+
 	}
 
 	public class QueryParameterComparer : IComparer<QueryParameter>

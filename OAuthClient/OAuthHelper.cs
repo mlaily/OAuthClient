@@ -18,89 +18,69 @@ namespace OAuth
 		/// <summary>
 		/// Add the provided parameters to the header of the provided request.
 		/// </summary>
-		/// <param name="request"></param>
-		/// <param name="parameters"></param>
-		/// <param name="clientSecret"></param>
-		/// <param name="tokenSecret"></param>
 		public static void MakeRequestAuthenticated(HttpWebRequest request, IEnumerable<QueryParameter> parameters, string clientSecret, string tokenSecret)
 		{
 			QueryParameter signatureMethodParameter = null;
 			SignatureMethod signatureMethod;
 			try
 			{
-				signatureMethodParameter = parameters.Single(x => x.Name == OAuthParametersNames[OAuthParameter.SignatureMethod]);
+				signatureMethodParameter = parameters.Single(x => x.Name == OAuthParameter.SignatureMethod.ToStringValue());
 				signatureMethod = OAuthSignatureMethods.Single(x => x.Value == signatureMethodParameter.Value).Key;
 			}
 			catch (Exception ex)
 			{
 				throw new ArgumentException("Signature method not found in the parameters.", ex);
 			}
-			var signatureBase = OAuthHelper.GetSignatureBaseString(request.Method, request.Address, parameters.ToArray());
-			var signature = OAuthHelper.GetSignature(signatureMethod, signatureBase, clientSecret, tokenSecret);
 			var parametersList = parameters.ToList();
+			var signatureBase = OAuthHelper.GetSignatureBaseString(request.Method, request.Address, parametersList);
+			var signature = OAuthHelper.GetSignature(signatureMethod, signatureBase, clientSecret, tokenSecret);
 			parametersList.Add(new QueryParameter(OAuthParameter.Signature, signature));
-			request.Headers.Add(HttpRequestHeader.Authorization, OAuthHelper.GetAuthorizationHeaderValue(parametersList.ToArray()));
+			request.Headers.Add(HttpRequestHeader.Authorization, OAuthHelper.GetAuthorizationHeaderValue(parametersList));
 		}
 
-		public static string GetAuthorizationHeaderValue(params QueryParameter[] parameters)
+		public static string GetAuthorizationHeaderValue(IEnumerable<QueryParameter> parameters)
 		{
 			StringBuilder result = new StringBuilder();
 			result.Append("OAuth ");
-			for (int i = 0; i < parameters.Length; i++)
+			foreach (var parameter in parameters)
 			{
-				result.AppendFormat("{0}=\"{1}\"", OAuthPercentEncode(parameters[i].Name), OAuthPercentEncode(parameters[i].Value));
-				if (i < parameters.Length - 1)
+				if (parameter != parameters.First())
 				{
 					result.Append(",");
 				}
+				result.AppendFormat("{0}=\"{1}\"", OAuthPercentEncode(parameter.Name), OAuthPercentEncode(parameter.Value));
 			}
 			return result.ToString();
 		}
 
-		public static List<QueryParameter> GetTemporaryCredentialsRequestParameters(string clientIdentifier, SignatureMethod signatureMethod, string callbackUri = "oob")
-		{
-			var result = GetParametersBase(clientIdentifier, signatureMethod);
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Callback], callbackUri));
-			return result;
-		}
-
-		public static List<QueryParameter> GetTokenCredentialsRequestParameters(string clientIdentifier, SignatureMethod signatureMethod, string temporaryIdentifier, string verifier)
-		{
-			var result = GetParametersBase(clientIdentifier, signatureMethod);
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Token], temporaryIdentifier));
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Verifier], verifier));
-			return result;
-		}
-
-		public static List<QueryParameter> GetTokenCredentialsParameters(string clientIdentifier, SignatureMethod signatureMethod, string tokenIdentifier)
-		{
-			var result = GetParametersBase(clientIdentifier, signatureMethod);
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Token], tokenIdentifier));
-			return result;
-		}
-
-		private static List<QueryParameter> GetParametersBase(string clientIdentifier, SignatureMethod signatureMethod)
+		public static IEnumerable<QueryParameter> GetQueryParameters(string clientIdentifier, SignatureMethod signatureMethod, params QueryParameter[] other)
 		{
 			List<QueryParameter> result = new List<QueryParameter>();
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.ConsumerKey], clientIdentifier));
-			result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.SignatureMethod], OAuthSignatureMethods[signatureMethod]));
+			result.Add(new QueryParameter(OAuthParameter.Version, VERSION));
+			result.Add(new QueryParameter(OAuthParameter.ConsumerKey, clientIdentifier));
+			result.Add(new QueryParameter(OAuthParameter.SignatureMethod, OAuthSignatureMethods[signatureMethod]));
 
 			switch (signatureMethod)
 			{
 				case SignatureMethod.PLAINTEXT:
 					break;
 				case SignatureMethod.HMAC_SHA1:
-					result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Timestamp], OAuthHelper.GenerateUTCTimestamp()));
-					result.Add(new QueryParameter(OAuthParametersNames[OAuthParameter.Nonce], OAuthHelper.GenerateNonce()));
+					result.Add(new QueryParameter(OAuthParameter.Timestamp, OAuthHelper.GenerateUTCTimestamp()));
+					result.Add(new QueryParameter(OAuthParameter.Nonce, OAuthHelper.GenerateNonce()));
 					break;
 				case SignatureMethod.RSA_SHA1:
 				default:
 					throw new NotImplementedException();
 			}
+
+			foreach (var parameter in other)
+			{
+				result.Add(parameter);
+			}
 			return result;
 		}
 
-		public static string GetSignatureBaseString(string httpMethod, Uri requestUri, params QueryParameter[] oAuthParams)
+		public static string GetSignatureBaseString(string httpMethod, Uri requestUri, IEnumerable<QueryParameter> oAuthParams)
 		{
 			StringBuilder signatureBaseString = new StringBuilder();
 			string baseStringUri = GetBaseStringUri(requestUri);
@@ -199,7 +179,7 @@ namespace OAuth
 			return parameters;
 		}
 
-		private static string NormalizeParameters(List<QueryParameter> parameters)
+		private static string NormalizeParameters(IEnumerable<QueryParameter> parameters)
 		{
 			List<QueryParameter> encodedParameters = new List<QueryParameter>();
 			foreach (var item in parameters)
@@ -210,7 +190,7 @@ namespace OAuth
 						OAuthPercentEncode(item.Value)));
 			}
 			encodedParameters.Sort(new QueryParameterComparer());
-			return string.Join("&", encodedParameters);
+			return string.Join("&", encodedParameters.Select(x => x.Encode()));
 		}
 
 		public static string GetSignature(SignatureMethod method, string signatureBaseString, string clientSecret, string tokenSecret)
@@ -235,7 +215,7 @@ namespace OAuth
 		/// </summary>
 		/// <param name="value"></param>
 		/// <returns></returns>
-		internal static string OAuthPercentEncode(string value)
+		private static string OAuthPercentEncode(string value)
 		{
 			byte[] valueUTF8Bytes = System.Text.Encoding.UTF8.GetBytes(value);
 			StringBuilder result = new StringBuilder();

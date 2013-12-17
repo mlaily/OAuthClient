@@ -28,4 +28,14 @@ token credentials       |   Access Token and Secret
 
 credentials: combination of an identifier and a shared-secret.
 
+
+Successfully tested with the following providers:
+ - Twitter
+ - Tumblr
+ - Flickr
+ - Vimeo
+ - Discogs
+ - Bitbucket
+ - Evernote
+
 02/2013 - Melvyn Laily.
