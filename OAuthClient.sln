@@ -1,18 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0436462B-0432-499C-BB97-D65D1F3326A6}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		OAuthClient.vsmdi = OAuthClient.vsmdi
-	EndProjectSection
-EndProject
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{267F0D9B-E8DE-410D-8CA5-B854135BC74F}"
 	ProjectSection(SolutionItems) = preProject
 		README.txt = README.txt
 		RFC 5849 - The OAuth 1.0 Protocol.htm = RFC 5849 - The OAuth 1.0 Protocol.htm
 		rfc5849.txt = rfc5849.txt
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthClient", "OAuthClient\OAuthClient.csproj", "{97ACE8D7-CC78-492D-8474-84F36296BE54}"
@@ -26,9 +21,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterTokenUtility", "RegisterTokenUtility\RegisterTokenUtility.csproj", "{9658FD38-0E62-43B8-97B0-6340FAA31026}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = OAuthClient.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -57,5 +49,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OAuthClient.vsmdi
 	EndGlobalSection
 EndGlobal
